@@ -2,6 +2,12 @@
 import sys
 import os.path
 
+def fix_name(name):
+    name = name.strip()
+    name = ''.join([c for c in name if c.isalpha() or c == "."])
+    tokens = name.lower().split(".")
+    return tokens
+
 if __name__ == "__main__": 
     if len(sys.argv) != 2:
         print("usage: {} names.txt".format((sys.argv[0])))
@@ -12,25 +18,22 @@ if __name__ == "__main__":
         sys.exit(0)
 
     for line in open(sys.argv[1]):
-        name = ''.join([c for c in line if  c == " " or  c.isalpha()])
-
-        tokens = name.lower().split()
+        name = fix_name(line)
 
         # skip empty lines
-        if len(tokens) < 1: 
+        if len(name) < 1: 
             continue
 
-        fname = tokens[0]
-        lname = tokens[-1]
+        fname = name[0]
+        lname = name[-1]
 
-        print(fname + lname)           # johndoe
-        print(lname + fname)           # doejohn
-        print(fname + "." + lname)     # john.doe
-        print(lname + "." + fname)     # doe.john
-        print(lname + fname[0])        # doej
-        print(fname[0] + lname)        # jdoe
-        print(lname[0] + fname)        # djoe
-        print(fname[0] + "." + lname)  # j.doe
-        print(lname[0] + "." + fname)  # d.john
-        print(fname)                   # john
-        print(lname)                   # joe
+        print("{}.{}".format(fname, lname))
+        print("{}{}".format(fname, lname))
+        print("{}{}".format(lname, fname))
+        print("{}.{}".format(lname, fname))
+        print("{}{}".format(lname, fname[0]))
+        print("{}{}".format(fname[0], lname))
+        print("{}.{}".format(fname[0], lname))
+        print("{}.{}".format(lname[0], fname))
+        print(fname)
+        print(lname)
